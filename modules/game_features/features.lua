@@ -14,10 +14,9 @@ function updateFeatures(version)
     
     -- you can add custom features here, list of them is in the modules\gamelib\const.lua
     g_game.enableFeature(GameBot)
-    --g_game.enableFeature(GameExtendedOpcode)
+    g_game.enableFeature(GameExtendedOpcode)
     --g_game.enableFeature(GameMinimapLimitedToSingleFloor) -- it will generate minimap only for current floor
-    --g_game.enableFeature(GameSpritesAlphaChannel)
-    g_game.enableFeature(GameMagicEffectU16)
+  
     
     if(version >= 770) then
         g_game.enableFeature(GameLooktypeU16)
@@ -56,6 +55,7 @@ function updateFeatures(version)
 
     if(version >= 860) then
         g_game.enableFeature(GameAttackSeq)
+        g_game.enableFeature(GameBot)
     end
 
     if(version >= 862) then
@@ -189,6 +189,11 @@ function updateFeatures(version)
     
     if(version >= 1100) then
         g_game.enableFeature(GamePrey)    
+        g_game.enableFeature(GameMagicEffectU16)
+        --g_game.enableFeature(GameDisplayItemDuration)
+		g_game.enableFeature(GameSpritesAlphaChannel)
+		g_game.enableFeature(GameDistanceEffectU16)
+		g_game.enableFeature(GameChangeMapAwareRange)
     end
     
     if(version >= 1200) then
