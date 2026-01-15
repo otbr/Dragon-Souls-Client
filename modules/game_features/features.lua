@@ -195,6 +195,7 @@ function updateFeatures(version)
 		g_game.enableFeature(GameSpritesAlphaChannel)
 		g_game.enableFeature(GameDistanceEffectU16)
 		g_game.enableFeature(GameChangeMapAwareRange)
+		g_game.enableFeature(GameDoubleHealth)
     end
     
     if(version >= 1200) then
