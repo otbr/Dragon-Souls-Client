@@ -894,6 +894,14 @@ void ProtocolGame::sendCloseImbuingWindow()
     send(msg);
 }
 
+void ProtocolGame::sendImbuementDurations(bool isOpen)
+{
+    auto msg = std::make_shared<OutputMessage>();
+    msg->addU8(0x60); // Opcode 96 (0x60) for imbuement durations
+    msg->addU8(isOpen ? 1 : 0);
+    send(msg);
+}
+
 void ProtocolGame::sendAddVip(const std::string& name)
 {
     auto msg = std::make_shared<OutputMessage>();

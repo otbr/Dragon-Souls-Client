@@ -152,6 +152,23 @@ struct Imbuement {
     int protectionCost;
 };
 
+struct ImbuementSlot {
+    uint8_t id;
+    std::string name;
+    uint16_t iconId;
+    uint32_t duration;
+    bool state;
+    ImbuementSlot(uint8_t id = 0) : id(id), iconId(0), duration(0), state(false) {}
+};
+
+struct ImbuementTrackerItem {
+    uint8_t slot;
+    uint8_t totalSlots;
+    ItemPtr item;
+    std::map<uint8_t, ImbuementSlot> slots;
+    ImbuementTrackerItem(uint8_t slot = 0) : slot(slot), totalSlots(0), item(nullptr) {}
+};
+
 struct Light {
     Point pos;
     uint8_t color = 215;

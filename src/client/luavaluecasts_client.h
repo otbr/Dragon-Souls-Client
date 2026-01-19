@@ -50,6 +50,7 @@ bool luavalue_cast(int index, StoreOffer& offer);
 
 // imbuement
 int push_luavalue(const Imbuement& offer);
+int push_luavalue(const ImbuementTrackerItem& item);
 
 // light
 int push_luavalue(const Light& light);

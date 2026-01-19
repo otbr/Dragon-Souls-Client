@@ -316,6 +316,7 @@ public:
     void applyImbuement(uint8_t slot, uint32_t imbuementId, bool protectionCharm);
     void clearImbuement(uint8_t slot);
     void closeImbuingWindow();
+    void imbuementDurations(bool isOpen);
 
     //void reportRuleViolation2();
     void ping();

@@ -58,6 +58,7 @@ namespace Proto {
         GameServerDeath                     = 40,
         GameServerSupplyStash               = 41,
         GameServerSpecialContainer          = 42,
+        GameServerImbuementDurations        = 93,
 
         // all in game opcodes must be greater than 50
         GameServerFirstGameOpcode           = 50,

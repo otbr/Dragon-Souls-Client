@@ -478,6 +478,9 @@ void ProtocolGame::parseMessage(const InputMessagePtr& msg)
             case Proto::GameServerCloseImbuementWindow:
                 parseCloseImbuementWindow(msg);
                 break;
+            case Proto::GameServerImbuementDurations:
+                parseImbuementDurations(msg);
+                break;
             case Proto::GameServerCyclopediaNewDetails:
                 parseCyclopediaNewDetails(msg);
                 break;
@@ -2905,6 +2908,47 @@ void ProtocolGame::parseImbuementWindow(const InputMessagePtr& msg)
 void ProtocolGame::parseCloseImbuementWindow(const InputMessagePtr&)
 {
     g_lua.callGlobalField("g_game", "onCloseImbuementWindow");
+}
+
+void ProtocolGame::parseImbuementDurations(const InputMessagePtr& msg)
+{
+    const uint8_t itemListCount = msg->getU8();
+    g_logger.info(stdext::format("[ImbuementTracker C++] itemListCount from server: %d", itemListCount));
+
+    std::vector<ImbuementTrackerItem> itemList;
+
+    for (int i = 0; i < itemListCount; ++i) {
+        ImbuementTrackerItem item(msg->getU8()); // slot
+        item.item = getItem(msg);
+
+        std::map<uint8_t, ImbuementSlot> slots;
+
+        const uint8_t slotsCount = msg->getU8();
+        item.totalSlots = slotsCount;
+        if (slotsCount == 0) {
+            itemList.emplace_back(item);
+            continue;
+        }
+
+        for (int slotIndex = 0; slotIndex < slotsCount; ++slotIndex) {
+            const bool slotImbued = msg->getU8() != 0;
+            if (!slotImbued) {
+                continue;
+            }
+
+            ImbuementSlot slot(slotIndex);
+            slot.name = msg->getString();
+            slot.iconId = msg->getU16();
+            slot.duration = msg->getU32();
+            slot.state = msg->getU8() != 0;
+            slots.emplace(slotIndex, slot);
+        }
+
+        item.slots = slots;
+        itemList.emplace_back(item);
+    }
+
+    g_lua.callGlobalField("g_game", "onUpdateImbuementTracker", itemList);
 }
 
 void ProtocolGame::parseCyclopedia(const InputMessagePtr& msg)

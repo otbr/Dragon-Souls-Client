@@ -106,6 +106,7 @@ public:
     void sendApplyImbuement(uint8_t slot, uint32_t imbuementId, bool protectionCharm);
     void sendClearImbuement(uint8_t slot);
     void sendCloseImbuingWindow();
+    void sendImbuementDurations(bool isOpen);
     void sendAddVip(const std::string& name);
     void sendRemoveVip(uint playerId);
     void sendEditVip(uint playerId, const std::string& description, int iconId, bool notifyLogin);
@@ -269,6 +270,7 @@ private:
     void parseQuestTracker(const InputMessagePtr& msg);
     void parseImbuementWindow(const InputMessagePtr& msg);
     void parseCloseImbuementWindow(const InputMessagePtr& msg);
+    void parseImbuementDurations(const InputMessagePtr& msg);
     void parseCyclopediaNewDetails(const InputMessagePtr& msg);
     void parseCyclopedia(const InputMessagePtr& msg);
     void parseDailyRewardState(const InputMessagePtr& msg);
