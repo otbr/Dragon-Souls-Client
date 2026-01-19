@@ -2913,7 +2913,6 @@ void ProtocolGame::parseCloseImbuementWindow(const InputMessagePtr&)
 void ProtocolGame::parseImbuementDurations(const InputMessagePtr& msg)
 {
     const uint8_t itemListCount = msg->getU8();
-    g_logger.info(stdext::format("[ImbuementTracker C++] itemListCount from server: %d", itemListCount));
 
     std::vector<ImbuementTrackerItem> itemList;
 

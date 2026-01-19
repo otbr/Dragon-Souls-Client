@@ -210,7 +210,7 @@ local function setDuration(label, duration)
 end
 
 local function addTrackedItem(item)
-    local trackedItem = g_ui.createWidget('InventoryItem')
+    local trackedItem = g_ui.createWidget('TrackerItem')
     trackedItem.item:setItem(item['item'])
     trackedItem.item:setVirtual(true)
     local maxDuration = 0
@@ -250,26 +250,19 @@ local function addTrackedItem(item)
 end
 
 function onUpdateImbuementTracker(items)
-    print("[ImbuementTracker] onUpdateImbuementTracker called")
-    print("[ImbuementTracker] items count: " .. (items and #items or "nil"))
-    
     if not imbuementTracker then
-        print("[ImbuementTracker] ERROR: imbuementTracker is nil!")
         return
     end
     
     if not imbuementTracker.contentsPanel then
-        print("[ImbuementTracker] ERROR: contentsPanel is nil!")
         return
     end
     
     imbuementTracker.contentsPanel:destroyChildren()
     
     local trackedItems = getTrackedItems(items)
-    print("[ImbuementTracker] tracked items count: " .. #trackedItems)
     
     for i, item in ipairs(trackedItems) do
-        print("[ImbuementTracker] Processing item " .. i .. " - slot: " .. (item['slot'] or "nil") .. ", totalSlots: " .. (item['totalSlots'] or "nil"))
         local trackedItem, duration = addTrackedItem(item)
         local show = true
         local hasActiveImbuements = #item['slots'] > 0 and duration > 0
@@ -304,7 +297,6 @@ function onGameStart()
         
         imbuementTrackerButton = modules.client_topmenu.addRightGameToggleButton('imbuementTrackerButton', tr('Imbuement Tracker'), '/images/icons/icon-imbuementtracker-widget', toggle)
         imbuementTrackerButton:setOn(true)
-        print("[ImbuementTracker] Requesting imbuement durations with isOpen=true")
         g_game.imbuementDurations(true)
         loadFilters()
     end

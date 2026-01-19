@@ -53,7 +53,7 @@ ImbuementSlotInactive < Panel
   width: 34
   height: 34
 
-InventoryItem < Panel
+TrackerItem < Panel
   height: 34
   margin-top: 3
   layout: anchor
