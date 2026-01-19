@@ -217,7 +217,7 @@ local function addTrackedItem(item)
     
     -- Create a table to track which slots are active
     local activeSlots = {}
-    for _, imbuementSlot in ipairs(item['slots']) do
+    for _, imbuementSlot in pairs(item['slots']) do
         activeSlots[imbuementSlot['id']] = imbuementSlot
     end
     
@@ -229,8 +229,7 @@ local function addTrackedItem(item)
             -- Active slot with imbuement
             local slot = g_ui.createWidget('ImbuementSlot')
             slot:setId('slot' .. imbuementSlot['id'])
-            -- Use imbue_green for active imbuements (icons folder doesn't exist)
-            slot:setImageSource('/images/game/imbuing/imbue_green')
+            slot:setImageSource('/images/game/imbuing/icons/' .. imbuementSlot['iconId'])
             slot:setMarginLeft(3)
             setDuration(slot.duration, imbuementSlot['duration'])
             trackedItem.imbuementSlots:addChild(slot)
