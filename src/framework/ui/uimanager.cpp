@@ -25,6 +25,7 @@
 #include "uiwidget.h"
 
 #include <framework/otml/otml.h>
+#include <framework/qml/qmldocument.h>
 #include <framework/graphics/graphics.h>
 #include <framework/platform/platformwindow.h>
 #include <framework/core/eventdispatcher.h>
@@ -391,9 +392,29 @@ void UIManager::clearStyles()
 bool UIManager::importStyle(std::string file)
 {
     try {
-        file = g_resources.guessFilePath(file, "otui");
+        bool isQml = false;
+        
+        // Check if file is QML
+        if (stdext::ends_with(file, ".qml")) {
+            isQml = true;
+        } else if (!stdext::ends_with(file, ".otui")) {
+            // Try to find .qml first, then .otui
+            if (g_resources.fileExists(file + ".qml")) {
+                file = file + ".qml";
+                isQml = true;
+            } else {
+                file = g_resources.guessFilePath(file, "otui");
+            }
+        }
 
-        OTMLDocumentPtr doc = OTMLDocument::parse(file);
+        OTMLDocumentPtr doc;
+        if (isQml)
+            doc = QMLDocument::parse(file);
+        else
+            doc = OTMLDocument::parse(file);
+
+        if (!doc)
+            return false;
 
         for(const OTMLNodePtr& styleNode : doc->children())
             importStyleFromOTML(styleNode);
@@ -527,9 +548,30 @@ UIWidgetPtr UIManager::loadUIFromString(const std::string& data, const UIWidgetP
 UIWidgetPtr UIManager::loadUI(std::string file, const UIWidgetPtr& parent)
 {
     try {
-        file = g_resources.guessFilePath(file, "otui");
+        bool isQml = false;
+        
+        // Check if file is QML
+        if (stdext::ends_with(file, ".qml")) {
+            isQml = true;
+        } else if (!stdext::ends_with(file, ".otui")) {
+            // Try to find .qml first, then .otui
+            if (g_resources.fileExists(file + ".qml")) {
+                file = file + ".qml";
+                isQml = true;
+            } else {
+                file = g_resources.guessFilePath(file, "otui");
+            }
+        }
 
-        OTMLDocumentPtr doc = OTMLDocument::parse(file);
+        OTMLDocumentPtr doc;
+        if (isQml)
+            doc = QMLDocument::parse(file);
+        else
+            doc = OTMLDocument::parse(file);
+
+        if (!doc)
+            return nullptr;
+
         UIWidgetPtr widget;
         for(const OTMLNodePtr& node : doc->children()) {
             std::string tag = node->tag();
@@ -545,7 +587,7 @@ UIWidgetPtr UIManager::loadUI(std::string file, const UIWidgetPtr& parent)
                 importStyleFromOTML(node);
             else {
                 if(widget)
-                    stdext::throw_exception("cannot have multiple main widgets in otui files");
+                    stdext::throw_exception("cannot have multiple main widgets in otui/qml files");
                 widget = createWidgetFromOTML(node, parent);
             }
         }

@@ -135,6 +135,13 @@ set(framework_SOURCES ${framework_SOURCES}
     ${CMAKE_CURRENT_LIST_DIR}/otml/otmlparser.cpp
     ${CMAKE_CURRENT_LIST_DIR}/otml/otmlparser.h
 
+    # qml support
+    ${CMAKE_CURRENT_LIST_DIR}/qml/declarations.h
+    ${CMAKE_CURRENT_LIST_DIR}/qml/qmldocument.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/qml/qmldocument.h
+    ${CMAKE_CURRENT_LIST_DIR}/qml/qmlparser.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/qml/qmlparser.h
+
     # crash handler
     ${CMAKE_CURRENT_LIST_DIR}/platform/crashhandler.h
     ${CMAKE_CURRENT_LIST_DIR}/platform/unixcrashhandler.cpp
