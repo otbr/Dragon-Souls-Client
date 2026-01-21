@@ -279,6 +279,7 @@ private:
     void parseCyclopedia(const InputMessagePtr& msg);
     void parseDailyRewardState(const InputMessagePtr& msg);
     void parseOpenRewardWall(const InputMessagePtr& msg);
+    void parseDailyRewardEntry(const InputMessagePtr& msg);
     void parseDailyReward(const InputMessagePtr& msg);
     void parseDailyRewardHistory(const InputMessagePtr& msg);
     void parseKillTracker(const InputMessagePtr& msg);

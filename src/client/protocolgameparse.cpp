@@ -2993,11 +2993,62 @@ void ProtocolGame::parseOpenRewardWall(const InputMessagePtr& msg)
     msg->getU16(); // unknown
 }
 
+void ProtocolGame::parseDailyRewardEntry(const InputMessagePtr& msg)
+{
+    uint8_t rewardType = msg->getU8();
+    
+    if (rewardType == 1) {
+        // Potions/Runes reward
+        msg->getU8(); // ammount (how many items player can pick)
+        
+        uint8_t itemCount = msg->getU8();
+        for (int j = 0; j < itemCount; j++) {
+            msg->getU16();    // sprite id
+            msg->getString(); // item name
+            msg->getU32();    // item weight
+        }
+    } else if (rewardType == 2) {
+        // Other rewards (prey reroll, xp boost, temporary items)
+        uint8_t entryCount = msg->getU8();
+        for (int j = 0; j < entryCount; j++) {
+            uint8_t entryType = msg->getU8();
+            
+            if (entryType == 1) {
+                // Fixed item
+                msg->getU16();    // item id
+                msg->getString(); // item name
+                msg->getU8();     // item count
+            } else if (entryType == 2) {
+                // Prey reroll
+                msg->getU8(); // ammount
+            } else if (entryType == 3) {
+                // XP boost
+                msg->getU16(); // ammount (duration in minutes)
+            }
+        }
+    }
+}
+
 void ProtocolGame::parseDailyReward(const InputMessagePtr& msg)
 {
-    uint8_t count = msg->getU8(); // state
+    uint8_t rewardCount = msg->getU8(); // number of reward slots
 
-    // TODO: implement daily reward usage
+    // Parse rewards for FREE and PREMIUM accounts
+    for (int i = 0; i < rewardCount; i++) {
+        // FREE account reward
+        parseDailyRewardEntry(msg);
+        // PREMIUM account reward
+        parseDailyRewardEntry(msg);
+    }
+
+    // Parse reward streaks
+    uint8_t streakCount = msg->getU8();
+    for (int i = 0; i < streakCount; i++) {
+        msg->getString(); // description
+        msg->getU8();     // days
+    }
+    
+    msg->getU8(); // freeRewardLimit - max free account days bonus
 }
 
 void ProtocolGame::parseDailyRewardHistory(const InputMessagePtr& msg)
